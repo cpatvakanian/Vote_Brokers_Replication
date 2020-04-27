@@ -80,30 +80,32 @@ ven_emp<-subset(ven, employed==1)
 
 # Introduction
 
-I am replicating "Vote Brokers, Clientelist Appeals, and Voter Turnout: Evidence from Russia and Venezuela" by Timothy Frye, Ora John Reuter and David Szakonyi.
+I am replicating "Vote Brokers, Clientelist Appeals, and Voter Turnout: Evidence from Russia and Venezuela" by Timothy Frye, Ora John Reuter and David Szakonyi.[^1] The authors use survey-based framework experiments conducted in Russia and Venezuela to analyze voter patterns and turnout in both countries respsectively. Their main finding is that there is higher voter turnout after a voter has been induced by an employer as opposed to a party activist. The results are consistent in both Venezuela and Russia, and are also consistent with existing literature on voter turnout, such as Mares and Young (2016), who also find that employer intimidation significantly influences voter turnout. The data are rich and from face to face interviews in both Russia and Venezuela, with the Venezuelan data coming from a stratified sample whereas the Russian from 20 regions. Thus, it appears that the Venezulean data is a more representative than the Russian. However I believe due to the random sampling and oversampling,the Russian data is still an accurate representation of Russian voters. The models used in the paper include using difference in means between brokers and between inducements, predicted probabilities from individual ordered logit regressions on respondents’ likelihood of voting in the survey experiment, and fixed effect linear regressions using interaction variables on willingness to vote.
 
+I was able to sucessfully replicate the paper using the softward of @Rbaby. The source of the data and code used for this replication was generously provided online at the authors' publicly accesible Dataverse.[^2] The repo with my replication code and data can be found on Github at the link provided in the footnote. [^3]
+
+[^1]:  \href{https://www.cambridge.org/core/journals/world-politics/article/vote-brokers-clientelist-appeals-and-voter-turnout-evidence-from-russia-and-venezuela/45FE0BE1216FCD8744B02A82919B328A}{{\underline{Frye, Reuter, and Szakonyi 2019}}}
+[^2]: \href{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YSVMS2}{{\underline{Frye, Reuter, and Szakonyi 2019 Dataverse}}}
+[^3]: \href{https://github.com/cpatvakanian/Vote_Brokers_Replication}{{\underline{Author's Github Replication Repository}}}
+
+For my extension of this paper, I decided to look at the missing values in this dataset. Given that the treatment assignment was random for all participants, it seemed unlikely that the misssing values the data would likely lead to any to any bias. However, as a robustness check, it is still an important contribution to ensure that the results we see are not due to potential sample bias in either country and that the data truly are missing at random. After imputing data using multivariate imputation by chained equations (MICE), I was able to create mutiple imputations or replacement values, for the gaps in the data. After running similar regressions provided in Table 3, I find results consistent with paper's originally findings, but lower in magitude.
 
 
 # Literature Review
 
-For this paper I looked at a few papers on voting structure in Russia, as I was able to find less on Venezuela. In "How Capitalism was Built", by Anders Aslund, the literature suggests that in many post soviet countries, voting patterns were heavily influenced by the transition to democracy in instiutions built. In Russia, the case was that there was not enough a big push to transform after communism, and thus the country had to face more difficulties in long term in ensuring fair and free elections. Additionally, in Olga Popova's "Corruption, Voting and Employment Status: Evidence from Russian Parliamentary Elections", Popova finds that controlling for different employment statuses and corruption, people are stil likely to vote differently, and more corruption generally induces people to vote more, which I think is to expected.
+For this paper I looked at a few papers on voting structure in Russia, as I was able to find less on Venezuela. In "How Capitalism was Built", by Anders Aslund, the literature suggests that in many post soviet countries, voting patterns were heavily influenced by the transition to democracy in instiutions built. In Russia, the case was that there was not enough a big push to transform after communism, and thus the country had to face more difficulties in long term in ensuring fair and free elections. Additionally, in Olga Popova's "Corruption, Voting and Employment Status: Evidence from Russian Parliamentary Elections", Popova finds that controlling for different employment statuses and corruption, people are stil likely to vote differently, and more corruption generally induces people to vote more, which I think is to expected. Additionally, the analysis I found closest to this paper was in Mares and Young (2016), who find that employer intimidation significantly influences voter turnout.
 
-# Paper Overview
-For my final replication project, I decided to look at Vote Brokers, Clientelist Appeals, and Voter Turnout: Evidence from Russia and Venezuela, a paper by Timothy Frye, Ora John Reuter and David Szakonyi. The paper looks at two countries, Russia and Venezuela, to what factors, if any, in clientelist exchange. The authors specifically look at the role of brokers and leverage in these two cases. The study uses survey data to explore Russian and Venezuelan brokers and how they perform in monitoring voting.
+# Replication
 
-The goal is basically to understand how are monitors pressured by upper management in order to carry out clientelism and skew the voting. To understand this, the authors use a few models, such as difference of means between the different type of brokers and methods of leveraging, in both Russia and Venezuela. They also run fixed effect linear regressions to see what influence the skewing of the voting turnout for a couple of different scenarios, but actually include very few variables in their regression which is strange. The paper also has very specific demographics of the type of individuals they are looking at, which is good because it is specific but might also be a drawback because it limits the scope of the study. This paper ultimately finds that in Russia and Venezuela, different types of brokers and methods can influence voter turnout differently, which seems to be expected. 
-
-# What I was able to replicate
-
-In this paper for the most part I was able to replicate all of the graphics. The tables I couldn't use the old code to make so I hand made them, which I think is not a good idea... I also had an issue combining some of the graphs to have the same legend. I also messed up some of the footnotes on the graphics, and instead used captions. On the regression, the variable order isn't like the original, which I couldn't figure out. Also, I had a lot of trouble getting the exact format from R things like GT to Latex/PDF, so that's why I had to resort to manually doing some things.
-
-
+I was succesfully able to replicate all of the figures and the regression table provided in the paper based on the authors' provided data and code. 
 
 # Extension
 
-For my extension, I decided to look at missing data in the data sets and impute data for the regressions used in table 3.  Looking at the tables below, I was able to 
+For my extension, I decided to look at missing data in the data sets and impute data for the regressions used in Table 3.  
 
-```{r Missing Data Russia}
+\begin{center}
+
+```{r Missing Data Russia, include= FALSE}
 
 # I wanted to look at the missing data in my data
 # set and see if there are any large gaps.
@@ -115,20 +117,27 @@ For my extension, I decided to look at missing data in the data sets and impute 
 Russia_all_miss <- gg_miss_var(rus, show_pct = TRUE) +
   labs(title = "Russia - All Missing Data")
 
+ggsave(file="images/Russia_all_miss.jpg")
 
 Russia_miss_brokers <- gg_miss_var(rus,
             show_pct = TRUE,
             facet = broker) +
   labs(title = "Russia - Missing Data by Broker")
 
-Russia_all_miss
-Russia_miss_brokers
+
+ggsave(file="images/Russia_miss_brokers.jpg")
+
+
 ```
 
 
+
+![All Missing Data - Russia](images/Russia_miss_brokers.jpg)
+![Missing Data for Brokers - Russia](images/Russia_miss_brokers.jpg)
+
 We see that for Russia, there is a lot of data missing for percentclose job, cowoerker_weekly, and findnewwork variables. When we further example data missing by broker, there generally seems to be the same variables missing with the exception being empparty for official, which is missing for 100% of the data.
 
-```{r Missing Data Venezuela}
+```{r Missing Data Venezuela, include = FALSE}
 
 
 #summary(ven)
@@ -138,22 +147,25 @@ We see that for Russia, there is a lot of data missing for percentclose job, cow
 Ven_all_miss <- gg_miss_var(ven, show_pct = TRUE) +
   labs(title = "Venezuela - All Missing Data")
 
+ggsave(file="images/Ven_all_miss.jpg")
 
 Ven_miss_brokers <- gg_miss_var(ven,
             show_pct = TRUE,
             facet = broker) +
   labs(title = "Venezuela - Missing Data by Broker")
 
-Ven_all_miss
-
-Ven_miss_brokers
+ggsave(file="images/Ven_miss_brokers.jpg")
 
 ```
+
+![All Missing Data - Venezuela](images/Ven_all_miss.jpg)
+![Missing Data for Brokers - Venezuela](images/Ven_miss_brokers.jpg)
+\end{center}
 
 We see that for Venezuela, there is a lot of data missing for firmsize, computer, manager, and sector variables. When we further example data missing by broker, there generally seems to be the same variables missing for all of the brokers. 
 
 
-Given that the regression for table 3 uses only data from Russia, I decided to impute the missing values using the mice(), function and re-run the regressions, which can be found in Table 2 of the appendix. When I compare my results with the imputed data and compare it to the original study, I find the same significance and sign of the coefficients, however the magnitude of the coefficients appears to be smaller in general. I think that this just shows the original study is valid and robust, and by being able to not only replicate the data but get very similar results to the original after imputing data, I feel even more confident in the authors' findings.
+Given that the regression for Table 3 uses only data from Russia, I decided to impute the missing values using the mice(), function and re-run the regressions, which can be found in Table 2 of the appendix. When I compare my results with the imputed data and compare it to the original study, I find the same significance and sign of the coefficients, however the magnitude of the coefficients appears to be smaller in general. I think that this just shows the original study is valid and robust, and by being able to not only replicate the data but get very similar results to the original after imputing data, I feel even more confident in the authors' findings.
 
 ```{r imputing data Russia, cache = TRUE}
 
@@ -177,7 +189,6 @@ imp_1 <- read_rds("imputed_Russia.rds")
 
 
 full <- complete(imp_1, 1)
-summary(full)
 
 new <- complete(imp_1, action="long", include = TRUE) %>% as_tibble()
 
@@ -192,41 +203,75 @@ new <- complete(imp_1, action="long", include = TRUE) %>% as_tibble()
 
 ```
 
-# GitHub
+```{r Imputed Data Table}
 
-All analysis for this paper be found in the [original paper] (https://www.cambridge.org/core/journals/world-politics/article/vote-brokers-clientelist-appeals-and-voter-turnout-evidence-from-russia-and-venezuela/45FE0BE1216FCD8744B02A82919B328A) and [data verse] (https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YSVMS2) My Github repo for this project is located under my username, cpatvakanian.  [^1]
+# Using Russian data, here the autors are creating a table which shows a fixed effects linear
+# model which is showing the outcome variable of voting, which
+# is used since the paper wants to see the fixed effects based on the different
+# categories of leverage, which in this case are people close they are to the job, 
+# how they use network, how many benefits, and if they are government worker
 
-```{r pizxza}
+est11 <-felm(expoutcome~empparty*perclosejob100+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
 
-testing <-felm(perclosejob100~ + citysize +  male + logage + polinterest + supervisor + lengthwork + coworker_weekly + edu+ gov|factor(strategy)|0|regionid, data=subset(rus, employed==1))
+est22 <-felm(expoutcome~empparty*findnewwork+ citysize +  male + logage + polinterest  + edu + gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
 
-#summary(testing)
+est33 <-felm(expoutcome~empparty*num_benefits+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
 
-testing2 <-glm(is.na(perclosejob100)~ + citysize +  male + logage + polinterest + supervisor + lengthwork + coworker_weekly + edu+ gov|factor(strategy)|0|regionid, data=subset(rus, employed==1), family= binomial)
+est44 <-felm(expoutcome~empparty*gov+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
 
-summary(testing2)
+# Exact same thing as above except looking now at the same regression
+# for the broker variables.
 
-#plogis()
+est55<-felm(expoutcome~empparty*supervisor+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
 
+est66<-felm(expoutcome~empparty*lengthwork+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
 
+est77<-felm(expoutcome~empparty*coworker_weekly+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
 
-rus_emp2 <- rus_emp %>%
-  filter(fulltreatment %in% c("employer_threat", "employer_gift", "employer_benign", "employer_org"))
-
-
-rus_emp3 <- rus_emp %>%
-  filter(is.na(perclosejob100))
 ```
 
 
+```{r stargazer new, results="asis", echo=FALSE, warning= FALSE}
+
+# Problem is from emp*party being in every single regression or GOV
+
+# I wasn't getting any parsing issues
+# but I had that error so I put warning equals false
+
+# I had some trouble geting rid of residual standard error
+# and also was a little stuck on putting the demographics
+# and constituent terms like in the original paper. Also,
+# some of the smaller formatting and labelling issues I didn't
+# address but I will fix them in the future.
+
+stargazer(est11, est22, est33,est44, est55, est66, est77, header = FALSE,
+          dep.var.labels=c("Outcome Respondent Would Vote"),
+      notes = "\\parbox[t]{10cm}{The outcome variable is the willingness to turnout outcome (five-point scale) from the survey
+experiment. The sample includes only respondents who received the employer or political party broker treatment. The employer treatment collapses the data along the inducement treatment arm of the factorial design used in the experiment. The sample is limited to only those who are employed. Chance of job loss measures the probability a respondent believes he or she will lose his or her job in the next twelve months. Hard to find a new job uses a five-point scale to capture the likelihood that if he or she were to lose his or her job, a respondent could find a similar one; higher values indicate more difficulty. Receives benefits captures the number of in-kind benefits (health care, education, transportation sub- sidies, etc.) respondents received from their employer. Higher values on the three-point scale used in knows supervisor well indicate better familiarity with one’s boss. Number of years employed measures the length of time at one’s work. Socializes with coworkers captures whether respondents spend time with colleagues outside work. All models include the constituent terms and basic demographic characteris- tics (gender, age, education, size of settlement, and an indicator for government employment). Models are estimated via ols and cluster errors at the region level.}",
+      single.row = FALSE,
+          column.sep.width = "-5pt",
+      keep=c("empparty:perclosejob100","empparty:findnewwork","empparty:num_benefits","empparty:gov","empparty:supervisor","empparty:lengthwork","empparty:coworker_weekly" ),
+      column.labels   = c("Leverage", "Monitoring"),
+df = FALSE,
+      omit.stat=c("rsq","adj.rsq", "ser"),
+        column.separate = c(4, 3),
+      order = c(4,1,2,3,5,6,7))
+
+```
+
+# Conclusion
+
+In this paper, I was succesffuly able to replicate all of the results of Frye, Reuter and Szakony (2019). The the use of a robustness test, I was able impute missing values in the dataset and find results in line with that of the original study, but of a smaller magnitude. These results confirm the authors' original findings and suggest that the missing values in their sampled population do not bias the results. The implications of this replication and extension are that future studies in this area can build on these existing results and have confidence that the findings of Frye, Reuter and Szakony (2019) are in fact robust.
 
 # References
 
-I make use of @aslund_2012, @popova, and @frye_reuter_szakonyi_2019. 
+I make use of @Rbaby, @aslund_2012, @popova, @mares and @frye_reuter_szakonyi_2019. 
 
 <div id="refs"></div>
 
 # Appendix
+
+## Figure 1
 
 ```{r making figure 1}
 # Creating first table with two panels
@@ -264,6 +309,8 @@ fig1_panelb<-ggplot(data=ven_d, aes(x=broker, y=vote_intent_m, fill=strategy_num
 ggarrange(fig1_panela, fig1_panelb, ncol=1, nrow=2, common.legend = TRUE, legend="bottom") + 
   labs(caption = "The figure displays the difference in the likelihood of voting among all respondents to the survey experiment.\nVoting likelihood is measured on a five-point scale, with higher values indicating increased likelihood.\nMean values for each treatment group are found above each bar and are organized according to which broker was\nresponsible for voter mobilization.The sample is a subset of only employed respondents.")
 ```
+
+## Figure 2
 
 ```{r making figure 2}
 
@@ -359,7 +406,7 @@ ggarrange(fig2_panela, fig2_panelb, ncol=1, nrow=2, common.legend = TRUE, legend
 
 ```
 
-
+## Figure 3
 
 ```{r making figure 3}
 # Similar concept to above, making a visual
@@ -504,200 +551,8 @@ fig3<-ggplot(df, aes(colour = variable,fill=variablefill))+ geom_linerange(aes(x
 fig3
 ```
 
-```{r creating table 1, results= "asis"}
+## Table 3
 
-# Here the Authors are making panel A of the graphic a
-# and their probabilities of voting which it looks like
-# is just from summary statistics
-
-# this is for Russia, and below it is the same thing for
-# Venezuela. Though this is miassing the code which has the note
-# and also missing the code which binds the two tables together
-
-rus$induce="Asked You to Vote"
-rus$induce[rus$gift4==1]="Offers You a Gift, Money, or Reward for Voting"
-rus$induce[rus$org4==1]="Tells You That Your Firm or Org. Will Suffer if Turnout Among Employees is Low"
-rus$induce[rus$threat4==1]="Indicates There Will be Negative Consequences For You If You Do Not Vote"
-
-rus$brokertable="  Your Employer"
-rus$brokertable[rus$broker=="Party"]=" A Party Activist"
-rus$brokertable[rus$broker=="Official"]="A Government Official"
-
-RussiaPercTable <- table(rus$brokertable,rus$induce)
-
-
-### Panel B
-
-#ven$induce="Asked You to Vote"
-#ven$induce[ven$strategy=="Gift"]="Offers You a Gift, Money, or Reward for Voting"
-#ven$induce[ven$strategy=="OrgThreat"]="Tells You That Your Firm or Org. Will Suffer if Turnout Among Employees is Low"
-#ven$induce[ven$strategy=="IndThreat"]="Indicates There Will be Negative Consequences For You If You Do Not Vote"
-
-#ven$brokertable="  Your Employer"
-#ven$brokertable[ven$broker=="Party"]=" A Party Activist"
-#ven$brokertable[ven$broker=="Neighborhood Leader"]="A Neighborhood Leader"
-
-#VenezuelaPercTable<-table(ven$brokertable,ven$induce)
-
-# MAke sure to code and pull data exactly from their paper 
-
-# Create my_first_data_table
-Russia_Survey <- tibble("Broker" = c("Your Employer", "A Party Activist", "A Neighborhood Leader"), 
-                                  "Asked You to Vote" = c(344, 336, 339),
-                                  "Indicates There Will be Negative Consequences For You If You Do Not Vote" = c(344,353,337),
-                                  "Offers You a Gift, Money, or Reward for Voting" = c(374,360,352),
-                                  "Tells You That Your Firm or Org. Will Suffer if Turnout Among Employees is Low" = c(372,362,331))  
-
-
-
-
-Venezuela_Survey <- tibble("Broker" = c("Your Employer", "A Party Activist", "A Neighborhood Leader"), 
-                                  "Asked You to Vote" = c(96, 94, 125),
-                                  "Indicates There Will be Negative Consequences For You If You Do Not Vote" = c(132,133,118),
-                                  "Offers You a Gift, Money, or Reward for Voting" = c(113,113,120),
-                                  "Tells You That Your Firm or Org. Will Suffer if Turnout Among Employees is Low" = c(114,118,124))  
-
-```
-\begin{center}
-Table 1: Survey Coverage
-
-Russian Survey
-(a)
-
-
-
-```{r table 1 part 1, results = "asis" }
-
-kable(Russia_Survey, format = "latex") %>%
-kable_styling(full_width = T)
-  
-#Try exploring options
-
-
-```
-\newline
-Venezuelan Survey
-(b)
-
-
-```{r table 1 part 2, results = "asis"}
-kable(Venezuela_Survey, format = "latex") %>%
-kable_styling(full_width = T)
-```
-
-
-
-```{r creating table 2}
-
-# I think this is making some of the data factor 
-# so it can be put in normally when inputted into the table
-rus_emp$expoutcome_f<-factor(rus_emp$expoutcome)
-
-# Here is using a predict function to run a regression
-# and then predict the probabbility of voting for employers
-# and the here is logistic dependent variable as a binary
-# which makes sense since you are either an employer or not
-# then that result gets added to a new dataframe
-
-t<-polr(expoutcome_f~employer4,data=rus_emp, method = "logistic")
-probs<-as.data.frame(predict(t, type="probs"))
-names(probs)=c("o1","o2","o3","o4","o5")
-rus_p<-cbind(rus_emp,probs)
-rusemployer_high<-mean(rus_p$o4[rus_p$employer4==1]) + mean(rus_p$o5[rus_p$employer4==1])
-rusemployer_low<-mean(rus_p$o1[rus_p$employer4==1]) + mean(rus_p$o2[rus_p$employer4==1])
-
-### Same as before for Activists
-t<-polr(expoutcome_f~activist4,data=rus_emp, method = "logistic")
-probs<-as.data.frame(predict(t, type="probs"))
-names(probs)=c("o1","o2","o3","o4","o5")
-rus_p<-cbind(rus_emp,probs)
-rusactivist_high<-mean(rus_p$o4[rus_p$activist4==1]) + mean(rus_p$o5[rus_p$activist4==1])
-rusactivist_low<-mean(rus_p$o1[rus_p$activist4==1]) + mean(rus_p$o2[rus_p$activist4==1])
-
-
-### Same as before for Official
-t<-polr(expoutcome_f~official4,data=rus_emp, method = "logistic")
-probs<-as.data.frame(predict(t, type="probs"))
-names(probs)=c("o1","o2","o3","o4","o5")
-rus_p<-cbind(rus_emp,probs)
-rusofficial_high<-mean(rus_p$o4[rus_p$official4==1]) + mean(rus_p$o5[rus_p$official4==1])
-rusofficial_low<-mean(rus_p$o1[rus_p$official4==1]) + mean(rus_p$o2[rus_p$official4==1])
-
-
-# Creating the exact same thing except for VENEZUELA
-
-ven_emp$vote_intent_f<-factor(ven_emp$vote_intent)
-ven_f<-subset(ven_emp, is.na(vote_intent_f)==FALSE)
-
-### Employer
-t<-polr(vote_intent_f~employer,data=ven_f, method = "logistic")
-probs<-as.data.frame(predict(t, type="probs"))
-names(probs)=c("o1","o2","o3","o4","o5")
-ven_p<-cbind(ven_f,probs)
-venemployer_high<-mean(ven_p$o4[ven_p$employer==1]) + mean(ven_p$o5[ven_p$employer==1])
-venemployer_low<-mean(ven_p$o1[ven_p$employer==1]) + mean(ven_p$o2[ven_p$employer==1])
-
-### Activist
-t<-polr(vote_intent_f~partyactivist,data=ven_f, method = "logistic")
-probs<-as.data.frame(predict(t, type="probs"))
-names(probs)=c("o1","o2","o3","o4","o5")
-ven_p<-cbind(ven_f,probs)
-venactivist_high<-mean(ven_p$o4[ven_p$partyactivist==1]) + mean(ven_p$o5[ven_p$partyactivist==1])
-venactivist_low<-mean(ven_p$o1[ven_p$partyactivist==1]) + mean(ven_p$o2[ven_p$partyactivist==1])
-
-### Leader
-t<-polr(vote_intent_f~leader,data=ven_f, method = "logistic")
-probs<-as.data.frame(predict(t, type="probs"))
-names(probs)=c("o1","o2","o3","o4","o5")
-ven_p<-cbind(ven_f,probs)
-venleader_high<-mean(ven_p$o4[ven_p$leader==1]) + mean(ven_p$o5[ven_p$leader==1])
-venleader_low<-mean(ven_p$o1[ven_p$leader==1]) + mean(ven_p$o2[ven_p$leader==1])
-
-
-# Here creating a summary table for the Russian and Venezuelan case
-# and allowing for the probabilities displayed as decimals
-# to be nomral percents
-
-PanelASummaryTable <- data.frame(brokers= numeric(0),rusprob= numeric(0),venprob= numeric(0))
-PanelASummaryTable[1 ,] <- c("Employer",specify_decimal(c(rusemployer_high*100,venemployer_high*100),1))
-PanelASummaryTable[2 ,] <- c("Party Activist",specify_decimal(c(rusactivist_high*100,venactivist_high*100),1))
-PanelASummaryTable[3 ,] <- c("Government Official",specify_decimal(rusofficial_high*100,1),"")
-PanelASummaryTable[4 ,] <- c("Neighborhood Leader","",specify_decimal(venleader_high*100,1))
-
-colnames(PanelASummaryTable) <- c(" ","Russia","Venezuela")
-
-# Again here creating a summary table except for those not
-# voting, though I am not entirely certain
-
-PanelBSummaryTable <- data.frame(brokers= numeric(0),rusprob= numeric(0),venprob= numeric(0))
-
-PanelBSummaryTable[1 ,] <- c("Employer",specify_decimal(c(rusemployer_low*100,venemployer_low*100),1))
-PanelBSummaryTable[2 ,] <- c("Party Activist",specify_decimal(c(rusactivist_low*100,venactivist_low*100),1))
-PanelBSummaryTable[3 ,] <- c("Government Official",specify_decimal(rusofficial_low*100,1),"")
-PanelBSummaryTable[4 ,] <- c("Neighborhood Leader","",specify_decimal(venleader_low*100,1))
-
-colnames(PanelBSummaryTable) <- c(" ","Russia","Venezuela")
-
-```
-
-Table 2: Substantive Effects: Predicted Probabilities by Broker Treatment
-
-Probability of Voting (\%)
-
-(a)
-
-```{r table 2 part 1}
-kable(PanelASummaryTable)
-```
-
-Probability of Not Voting (\%)
-
-(b)
-```{r table 2 part 2}
-kable(PanelBSummaryTable)
-```
-
-\end{center}
 ```{r creating table 3}
 
 # Using Russian data, here the autors are creating a table which shows a fixed effects linear
@@ -725,13 +580,7 @@ est7<-felm(expoutcome~empparty*coworker_weekly+ citysize +  male + logage + poli
 
 ```
 
-
-
-
-
-
-
-```{r stargazer, results="asis", echo=FALSE, warning= FALSE}
+```{r stargazer12345, results="asis", echo=FALSE, warning= FALSE}
 
 # Problem is from emp*party being in every single regression or GOV
 
@@ -759,66 +608,4 @@ df = FALSE,
 
 ```
 
-## Regressions with Imputed Data
-
-```{r Imputed Data Table}
-
-# Using Russian data, here the autors are creating a table which shows a fixed effects linear
-# model which is showing the outcome variable of voting, which
-# is used since the paper wants to see the fixed effects based on the different
-# categories of leverage, which in this case are people close they are to the job, 
-# how they use network, how many benefits, and if they are government worker
-
-est11 <-felm(expoutcome~empparty*perclosejob100+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
-
-est22 <-felm(expoutcome~empparty*findnewwork+ citysize +  male + logage + polinterest  + edu + gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
-
-est33 <-felm(expoutcome~empparty*num_benefits+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
-
-est44 <-felm(expoutcome~empparty*gov+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
-
-# Exact same thing as above except looking now at the same regression
-# for the broker variables.
-
-est55<-felm(expoutcome~empparty*supervisor+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
-
-est66<-felm(expoutcome~empparty*lengthwork+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
-
-est77<-felm(expoutcome~empparty*coworker_weekly+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
-
-```
-
-
-
-
-```{r stargazer new, results="asis", echo=FALSE, warning= FALSE}
-
-# Problem is from emp*party being in every single regression or GOV
-
-# I wasn't getting any parsing issues
-# but I had that error so I put warning equals false
-
-# I had some trouble geting rid of residual standard error
-# and also was a little stuck on putting the demographics
-# and constituent terms like in the original paper. Also,
-# some of the smaller formatting and labelling issues I didn't
-# address but I will fix them in the future.
-
-stargazer(est11, est22, est33,est44, est55, est66, est77, header = FALSE,
-          dep.var.labels=c("Outcome Respondent Would Vote"),
-      notes = "\\parbox[t]{10cm}{The outcome variable is the willingness to turnout outcome (five-point scale) from the survey
-experiment. The sample includes only respondents who received the employer or political party broker treatment. The employer treatment collapses the data along the inducement treatment arm of the factorial design used in the experiment. The sample is limited to only those who are employed. Chance of job loss measures the probability a respondent believes he or she will lose his or her job in the next twelve months. Hard to find a new job uses a five-point scale to capture the likelihood that if he or she were to lose his or her job, a respondent could find a similar one; higher values indicate more difficulty. Receives benefits captures the number of in-kind benefits (health care, education, transportation sub- sidies, etc.) respondents received from their employer. Higher values on the three-point scale used in knows supervisor well indicate better familiarity with one’s boss. Number of years employed measures the length of time at one’s work. Socializes with coworkers captures whether respondents spend time with colleagues outside work. All models include the constituent terms and basic demographic characteris- tics (gender, age, education, size of settlement, and an indicator for government employment). Models are estimated via ols and cluster errors at the region level.}",
-      single.row = FALSE,
-          column.sep.width = "-5pt",
-      keep=c("empparty:perclosejob100","empparty:findnewwork","empparty:num_benefits","empparty:gov","empparty:supervisor","empparty:lengthwork","empparty:coworker_weekly" ),
-      column.labels   = c("Leverage", "Monitoring"),
-df = FALSE,
-      omit.stat=c("rsq","adj.rsq", "ser"),
-        column.separate = c(4, 3),
-      order = c(4,1,2,3,5,6,7))
-
-```
-
-
 ![Original Table 3 in Paper I am replicating](images/tablexample.jpg)
-[^1]: [(https://github.com/cpatvakanian/milestone_7)] 
