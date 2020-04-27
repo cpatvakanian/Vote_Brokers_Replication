@@ -2,16 +2,22 @@
 title: "Vote Brokers Replication Paper"
 author: "Cristopher Patvakanian"
 output: bookdown::pdf_document2
+toc-title: Table of Contents
 toc: false
-toc_depth: 2
+abstract: "Frye, Reuter and Szakony (2019) examine the voter behavior Russia and Venezuela and find different types of brokers, appeals, and targets have different effects on voter turnout. I successfully replicated all of their results. As a robustness test, I impute missing values in the dataset and find results in line with that of the original study, but of a smaller magnitude. These results confirm the authors' original findings and suggest that the missing values in their sampled population do not bias the results."
 bibliography: bib.bib
 link-citations: true
-pandoc_args: ["--include-after-body=appendix.md"]
 header-includes:
 - \usepackage{setspace}
 - \doublespacing
 - \usepackage{caption} # Insert the package used by gt
 ---
+
+
+\newpage
+
+\tableofcontents
+\newpage
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
@@ -55,14 +61,6 @@ library(tidyverse)
 ```
 
 
-# Abstract {.unlisted .unnumbered}
-
-Timothy Frye, Reuter and Szakony (2019) examine the voter behavior Russia and Venezuela and find different types of brokers, appeals, and targets have different effects on voter turnout. I successfully replicated all of their results. As a robustness test, I impute missing values in the dataset and find results in line with that of the originally study, but of a smaller magnitude. These results confirm the authors' original findings and suggest that the missing values in their sampled population do not bias the results.
-
-\pagebreak
-
-\tableofcontents
-
 
 
 ```{r loading data}
@@ -76,9 +74,14 @@ ven_emp<-subset(ven, employed==1)
 
 ```
 
+
+
+
+
 # Introduction
 
 I am replicating "Vote Brokers, Clientelist Appeals, and Voter Turnout: Evidence from Russia and Venezuela" by Timothy Frye, Ora John Reuter and David Szakonyi.
+
 
 
 # Literature Review
