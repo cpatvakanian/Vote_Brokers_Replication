@@ -2,7 +2,6 @@
 title: "Vote Brokers Replication Paper"
 author: "Cristopher Patvakanian"
 output: bookdown::pdf_document2
-toc-title: Table of Contents
 toc: false
 abstract: "Frye, Reuter and Szakony (2019) examine the voter behavior Russia and Venezuela and find different types of brokers, appeals, and targets have different effects on voter turnout. I successfully replicated all of their results. As a robustness test, I impute missing values in the dataset and find results in line with that of the original study, but of a smaller magnitude. These results confirm the authors' original findings and suggest that the missing values in their sampled population do not bias the results."
 bibliography: bib.bib
@@ -11,8 +10,8 @@ header-includes:
 - \usepackage{setspace}
 - \doublespacing
 - \usepackage{caption} # Insert the package used by gt
+- \usepackage[bottom]{footmisc}
 ---
-
 
 \newpage
 
@@ -82,7 +81,7 @@ ven_emp<-subset(ven, employed==1)
 
 I am replicating "Vote Brokers, Clientelist Appeals, and Voter Turnout: Evidence from Russia and Venezuela" by Timothy Frye, Ora John Reuter and David Szakonyi.[^1] The authors use survey-based framework experiments conducted in Russia and Venezuela to analyze voter patterns and turnout in both countries respsectively. Their main finding is that there is higher voter turnout after a voter has been induced by an employer as opposed to a party activist. The results are consistent in both Venezuela and Russia, and are also consistent with existing literature on voter turnout, such as Mares and Young (2016), who also find that employer intimidation significantly influences voter turnout. The data are rich and from face to face interviews in both Russia and Venezuela, with the Venezuelan data coming from a stratified sample whereas the Russian from 20 regions. Thus, it appears that the Venezulean data is a more representative than the Russian. However I believe due to the random sampling and oversampling,the Russian data is still an accurate representation of Russian voters. The models used in the paper include using difference in means between brokers and between inducements, predicted probabilities from individual ordered logit regressions on respondents’ likelihood of voting in the survey experiment, and fixed effect linear regressions using interaction variables on willingness to vote.
 
-I was able to sucessfully replicate the paper using the softward of @Rbaby. The source of the data and code used for this replication was generously provided online at the authors' publicly accesible Dataverse.[^2] The repo with my replication code and data can be found on Github at the link provided in the footnote. [^3]
+I was able to sucessfully replicate the paper using the software of @Rbaby. The source of the data and code used for this replication was generously provided online at the authors' publicly accesible Dataverse.[^2] The repo with my replication code and data can be found on Github at the link provided in the footnote. [^3]
 
 [^1]:  \href{https://www.cambridge.org/core/journals/world-politics/article/vote-brokers-clientelist-appeals-and-voter-turnout-evidence-from-russia-and-venezuela/45FE0BE1216FCD8744B02A82919B328A}{{\underline{Frye, Reuter, and Szakonyi 2019}}}
 [^2]: \href{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YSVMS2}{{\underline{Frye, Reuter, and Szakonyi 2019 Dataverse}}}
@@ -101,33 +100,48 @@ I was succesfully able to replicate all of the figures and the regression table 
 
 # Extension
 
-For my extension, I decided to look at missing data in the data sets and impute data for the regressions used in Table 3.  
+For my extension, I decided to look at missing data in the data sets and use multiple imputition to examine the robustness of the regressions found in Table 3. For my data imputation, I follow the University of Virginia StatLab article "Getting Started with Multiple Imputation in R".[^4]  
 
-\begin{center}
 
-```{r Missing Data Russia, include= FALSE}
+
+
+
+
+
+
+
+
+
+[^4]:\href{https://uvastatlab.github.io/2019/05/01/getting-started-with-multiple-imputation-in-r/}{{\underline{"Getting Started with Multiple Imputation in R"}}}
+
+```{r Missing Data Russia}
 
 # I wanted to look at the missing data in my data
 # set and see if there are any large gaps.
 
 #summary(rus)
 
-# Looking at missing values for Russia
+# Looking at missing values for Russia and filtering to just have those employed
+# in order match the analysis provided in the data
+rus2 <- rus %>%
+  filter(employed == 1)
 
-Russia_all_miss <- gg_miss_var(rus, show_pct = TRUE) +
+Russia_all_miss <- gg_miss_var(rus2, show_pct = TRUE) +
   labs(title = "Russia - All Missing Data")
 
-ggsave(file="images/Russia_all_miss.jpg")
+#ggsave(file="images/Russia_all_miss.jpg")
 
-Russia_miss_brokers <- gg_miss_var(rus,
+Russia_miss_brokers <- gg_miss_var(rus2,
             show_pct = TRUE,
             facet = broker) +
   labs(title = "Russia - Missing Data by Broker")
 
 
-ggsave(file="images/Russia_miss_brokers.jpg")
+#ggsave(file="images/Russia_miss_brokers.jpg")
 
+Russia_all_miss
 
+Russia_miss_brokers
 ```
 
 
@@ -135,34 +149,9 @@ ggsave(file="images/Russia_miss_brokers.jpg")
 ![All Missing Data - Russia](images/Russia_miss_brokers.jpg)
 ![Missing Data for Brokers - Russia](images/Russia_miss_brokers.jpg)
 
-We see that for Russia, there is a lot of data missing for percentclose job, cowoerker_weekly, and findnewwork variables. When we further example data missing by broker, there generally seems to be the same variables missing with the exception being empparty for official, which is missing for 100% of the data.
 
-```{r Missing Data Venezuela, include = FALSE}
-
-
-#summary(ven)
-
-# Looking at missing values for Russia
-
-Ven_all_miss <- gg_miss_var(ven, show_pct = TRUE) +
-  labs(title = "Venezuela - All Missing Data")
-
-ggsave(file="images/Ven_all_miss.jpg")
-
-Ven_miss_brokers <- gg_miss_var(ven,
-            show_pct = TRUE,
-            facet = broker) +
-  labs(title = "Venezuela - Missing Data by Broker")
-
-ggsave(file="images/Ven_miss_brokers.jpg")
-
-```
-
-![All Missing Data - Venezuela](images/Ven_all_miss.jpg)
-![Missing Data for Brokers - Venezuela](images/Ven_miss_brokers.jpg)
 \end{center}
 
-We see that for Venezuela, there is a lot of data missing for firmsize, computer, manager, and sector variables. When we further example data missing by broker, there generally seems to be the same variables missing for all of the brokers. 
 
 
 Given that the regression for Table 3 uses only data from Russia, I decided to impute the missing values using the mice(), function and re-run the regressions, which can be found in Table 2 of the appendix. When I compare my results with the imputed data and compare it to the original study, I find the same significance and sign of the coefficients, however the magnitude of the coefficients appears to be smaller in general. I think that this just shows the original study is valid and robust, and by being able to not only replicate the data but get very similar results to the original after imputing data, I feel even more confident in the authors' findings.
@@ -172,36 +161,43 @@ Given that the regression for Table 3 uses only data from Russia, I decided to i
 # Here I am using the mice function in order to get the imputed values
 # for my missing data in the data set.
 
-#imp_1 <- mice(rus, nnet.MaxNWts = 2000)
+# I changed the weights arguemnet so that mice will actually run and bypass the
+# default weights set in place so that it doesn't run for too long and using predictive
+# mean matching such that it selects a logical value from other observations in the sample
+
+imp_1 <- mice(rus2, method="pmm", m=1, nnet.MaxNWts = 2000, remove_collinear = FALSE, seed=2020)
+
+```
+
+```{r testing which iteration works best}
+
+# Fitting my model and pooling
+modelFit1 <- with(imp_1,felm(expoutcome~empparty*perclosejob100+ citysize +male + logage + polinterest+ edu+ gov|factor(strategy)|0|regionid))
+pool(modelFit1)
+
+# Putting a density plot to show that what I have 
+# produced is accurate and falls in line with thhe original study
+densityplot(imp_1)
+
+# Here I am selecting one of the iterations of the
+# data I would like to use for my final analysis
+
+completedData <- complete(imp_1,1)
+
+# Here I am filtering the data set to be only those people included
+# in the original regression
+completedData2 <- completedData %>%
+  filter(broker != "Official")
+
 
 # Now I am saving that file to be and RDS so that I don't have to reimpute it
 # and can use it again in further analysis
 
-#saveRDS(imp_1, file = "imputed_Russia.rds")
-
-# Here I am reading in the imputed data again
-
-imp_1 <- read_rds("imputed_Russia.rds")
-
-# Now I am creating a complete data set which 
-# includes all of the imputed values,  I was not sure I
-# I needed to pool them though.
-
-
-full <- complete(imp_1, 1)
-
-new <- complete(imp_1, action="long", include = TRUE) %>% as_tibble()
-
-
-# Are ppl who don't report more or less likely to vote? don't report fear of losing bc theyre afraid of losing, most afraid won't say
-
-# looking at actual value vs looking at if you reported or not
-
-# could put all 5 in a single regression and
-# run stanglm and report the coefficeint varaition on that
-
+saveRDS(imp_1, file = "imputed_Russia.rds")
 
 ```
+
+
 
 ```{r Imputed Data Table}
 
@@ -211,22 +207,22 @@ new <- complete(imp_1, action="long", include = TRUE) %>% as_tibble()
 # categories of leverage, which in this case are people close they are to the job, 
 # how they use network, how many benefits, and if they are government worker
 
-est11 <-felm(expoutcome~empparty*perclosejob100+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
+est11 <-felm(expoutcome~empparty*perclosejob100+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=completedData2)
 
-est22 <-felm(expoutcome~empparty*findnewwork+ citysize +  male + logage + polinterest  + edu + gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
+est22 <-felm(expoutcome~empparty*findnewwork+ citysize +  male + logage + polinterest  + edu + gov|factor(strategy)|0|regionid, data=completedData2)
 
-est33 <-felm(expoutcome~empparty*num_benefits+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
+est33 <-felm(expoutcome~empparty*num_benefits+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=completedData2)
 
-est44 <-felm(expoutcome~empparty*gov+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
+est44 <-felm(expoutcome~empparty*gov+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=completedData2)
 
 # Exact same thing as above except looking now at the same regression
 # for the broker variables.
 
-est55<-felm(expoutcome~empparty*supervisor+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
+est55<-felm(expoutcome~empparty*supervisor+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=completedData2)
 
-est66<-felm(expoutcome~empparty*lengthwork+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
+est66<-felm(expoutcome~empparty*lengthwork+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=completedData2)
 
-est77<-felm(expoutcome~empparty*coworker_weekly+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=subset(new, employed==1))
+est77<-felm(expoutcome~empparty*coworker_weekly+ citysize +  male + logage + polinterest  + edu+ gov|factor(strategy)|0|regionid, data=completedData2)
 
 ```
 
