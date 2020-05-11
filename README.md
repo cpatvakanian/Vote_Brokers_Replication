@@ -12,7 +12,7 @@ The folder "images" contains the various images I used in my Rmd as part of the 
 
 The "data" folder contains all of the data and code provided by the authors in the [Frye, Reuter and Szakony Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YSVMS2).
 
-The original paper written by Frye, Reuter and Szakony can be found online at the [Cambridge University Press Website](https://www.cambridge.org/core/journals/world-politics/article/vote-brokers-clientelist-appeals-and-voter-turnout-evidence-from-russia-and-venezuela/45FE0BE1216FCD8744B02A82919B328A).
+The original paper written by Frye, Reuter and Szakony can be found online at the [Cambridge University Press website](https://www.cambridge.org/core/journals/world-politics/article/vote-brokers-clientelist-appeals-and-voter-turnout-evidence-from-russia-and-venezuela/45FE0BE1216FCD8744B02A82919B328A).
 
 The "bib.bib" file has the citations I used for my paper.
 
