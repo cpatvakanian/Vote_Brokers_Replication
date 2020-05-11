@@ -3,7 +3,7 @@ title: "Vote Brokers Replication Paper"
 author: "Cristopher Patvakanian"
 output: bookdown::pdf_document2
 toc: false
-abstract: "Frye, Reuter and Szakony (2019) examine the voter behavior in Russia and Venezuela and find different types of brokers, appeals, and targets have different effects on voter turnout. I successfully replicated all of their results. As a robustness test, I impute missing values in the dataset and find results in line with that of the original study, but of a slightly different magnitude. These results confirm the authors' original findings and suggest that the missing values in their sampled population do not bias the results."
+abstract: "Frye, Reuter and Szakony (2019) examine voter behavior in Russia and Venezuela and find different types of brokers, appeals, and targets have different effects on voter turnout. I successfully replicated all of their results. As a robustness test, I impute missing values in the dataset and find results in line with that of the original study, but of a slightly different magnitude. These results confirm the authors' original findings and suggest that the missing values in their sampled population do not bias the results."
 bibliography: bib.bib
 link-citations: true
 header-includes:
@@ -105,7 +105,7 @@ For my extension, I decided to look at missing data in the data sets and use mul
 
 Given that the regression I am using for my extension, Figure 2 (which can be found in the appendix), uses only data from Russia, I decided to impute the missing values for Russia using the mice() function and re-run the regressions. I use the standard 5 iterations to gain 5 data sets of imputed data, and pool the results to get the final coefficients I would like to use for my model. In Figure 1, I show the density plots for the imputed data as a check to see whether or not the data I have imputed matches the existing values in the data set. It appears that the imputed data generally appear in line with the existing data set, which indicates that the data imputation is valid. Finally, in Table 2, which can be found in the appendix, I present the results of re-running the regressions using the newly imputed data.
 
-When I take my results with the imputed data in Table 2 and compare it those of the original study, I find the same significance and sign of the coefficients, however the magnitude of the coefficients appears to differ only very slightly. I think that this just shows the original study is valid and robust, and by being able to not only replicate the data but get very similar results to the original after imputing data, I feel even more confident in the authors' findings.
+When I take my results with the imputed data in Table 2 and compare it those of the original study, I find the same significance of the coefficients, however the magnitude of the coefficients appears to differ only very slightly. I think that this just shows the original study is valid and robust, and by being able to not only replicate the data but get very similar results to the original after imputing data, I feel even more confident in the authors' findings.
 
 
 [^4]:\href{https://datascienceplus.com/imputing-missing-data-with-r-mice-package/}{{\underline{"Data Management in R Imputing Missing Data with R; MICE package"}}}
