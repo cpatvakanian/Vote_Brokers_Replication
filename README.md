@@ -8,4 +8,4 @@ The file "Replication.Rmd" contains the R markdown file I used to replicate the 
 
 The folder "images" contains the various images I used in my Rmd as part of the replication and extension.
 
-The "data" folder contains all of the data I used for this project and is from the [Frye, Reuter and Szakony}(https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YSVMS2)
+The "data" folder contains all of the data I used for this project and is from the [Frye, Reuter and Szakony](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YSVMS2)
