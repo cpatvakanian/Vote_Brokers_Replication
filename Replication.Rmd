@@ -79,7 +79,7 @@ I am replicating "Vote Brokers, Clientelist Appeals, and Voter Turnout: Evidence
 
 I was able to successfully replicate the paper using the software of @Rbaby. The source of the data and code used for this replication was generously provided online at the authors' publicly accessible Dataverse.[^2] The repo with my replication code and data can be found on GitHub at the link provided in the footnote. [^3]
 
-For my extension of this paper, I decided to look at the missing values in this dataset. Given that the treatment assignment was random for all participants, it seemed unlikely that the missing values the data would likely lead to any to any bias. However, as a robustness check, it is still an important contribution to ensure that the results we see are not due to potential sample bias in either country and that the data truly are missing at random. After imputing data using multivariate imputation by chained equations (MICE), I was able to create multiple imputations or replacement values, for the gaps in the data. After running similar regressions provided in Table 3, I find results consistent with paper's originally findings, with some regressions' coefficients becoming slightly higher or lower in magitude.
+For my extension of this paper, I decided to look at the missing values in this dataset. Given that the treatment assignment was random for all participants, it seemed unlikely that the missing values the data would likely lead to any to any bias. However, as a robustness check, it is still an important contribution to ensure that the results we see are not due to potential sample bias in either country and that the data truly are missing at random. After imputing data using multivariate imputation by chained equations (MICE), I was able to create multiple imputations or replacement values, for the gaps in the data. After running similar regressions provided in Table 3, I find results consistent with paper's originally findings, with some regressions' coefficients becoming slightly higher or lower in magnitude.
 
 
 [^1]:  \href{https://www.cambridge.org/core/journals/world-politics/article/vote-brokers-clientelist-appeals-and-voter-turnout-evidence-from-russia-and-venezuela/45FE0BE1216FCD8744B02A82919B328A}{{\underline{Frye, Reuter, and Szakonyi 2019}}}
@@ -89,15 +89,15 @@ For my extension of this paper, I decided to look at the missing values in this 
 
 # Literature Review
 
-The findings of Frye, Reuter and Szakony (2019) appear to generally follow what is in the literature. In @aslund_2012, Aslund suggests that in many post soviet countries, voting patterns were heavily influenced by the transition to democracy in institutions built. In Russia, the case was that there was not enough a big push to transform after communism, and thus the country had to face more difficulties in long term in ensuring fair and free elections due to potential voter interference and corruption on all levels. Similarly, @popova finds that controlling for different employment statuses and corruption, people are stil likely to vote differently, and more corruption generally induces people to vote more.
+The findings of Frye, Reuter and Szakony (2019) appear to generally follow what is in the literature. In @aslund_2012, Aslund suggests that in many post soviet countries, voting patterns were heavily influenced by the transition to democracy in institutions built. In Russia, the case was that there was not enough a big push to transform after communism, and thus the country had to face more difficulties in long term in ensuring fair and free elections due to potential voter interference and corruption on all levels. Similarly, @popova finds that controlling for different employment statuses and corruption, people are still likely to vote differently, and more corruption generally induces people to vote more.
 
-Regarding the literature on Venezuela, @Jimenez too find that there is evidence for significant voter interference in voting in the country through "voter rigging". In addition, @Jimenez draw parallels in this study to the types of voter manipulation rampant in Russia. @stokes also find that voter fraud is indeed a large problem in Venezuela, and given the extent of information aviable party activists, who for example are able to access a large portion of individual voter history and tendencies, voter intimidation through party activists has become a significant issue in the country. 
+Regarding the literature on Venezuela, @Jimenez too find that there is evidence for significant voter interference in voting in the country through "voter rigging". In addition, @Jimenez draw parallels in this study to the types of voter manipulation rampant in Russia. @stokes also find that voter fraud is indeed a large problem in Venezuela, and given the extent of information available party activists, who for example are able to access a large portion of individual voter history and tendencies, voter intimidation through party activists has become a significant issue in the country. 
 
 Additionally, other areas of literature focuses on the impact of violence on voting outcomes. In the African context, specifically sub-Saharan African nation of Kenya, @bekoe_burchard_2017 finds that threats to ones life have been used throughout the country to suppress voter turnout, though on aggregate they do not see an effect. Something which is less prevalent in the literature in most contexts, including  both Russia and Venezuela, is the influence of employers on voter turnout in these countries. Some of the latest research, presented in @mares, finds that employer intimidation significantly influences voter turnout, which closely matches the findings of Frye, Reuter and Szakony (2019). 
 
 # Replication
 
-I was able to replicate all of the figures and the regression table provided in the paper based on the authors' provided data and code. There are minor visual differences, but all of the regression and and table values exactly match those provided in Frye, Reuter and Szakony (2019). In the appendix, I provide one example of successful replication of Table 3 from the original paper. The replications of the other key figures and regression tables can be found in my code.  
+I was able to replicate all of the figures and the regression table provided in the paper based on the authors' provided data and code. There are minor visual differences, but all of the regression and table values exactly match those provided in Frye, Reuter and Szakony (2019). In the appendix, I provide one example of successful replication of Table 3 from the original paper. The replications of the other key figures and regression tables can be found in my code.  
 
 # Extension
 
@@ -204,7 +204,7 @@ The results from Frye, Reuter and Szakony (2019) were successfully replicated. A
 
 Below I have also included Table 2, which uses the imputed data to replicate the study's original Table 3.
 
-[^5]: \href{https://github.com/cpatvakanian/Vote_Brokers_Replication}{{\underline{Author's Github Replication Repository}}}
+[^5]: \href{https://github.com/cpatvakanian/Vote_Brokers_Replication}{{\underline{Author's GitHub Replication Repository}}}
 
 ![Frye, Reuter and Szakony (2019) Table 3](images/tablexample.jpg)
 
